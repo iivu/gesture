@@ -1,0 +1,31 @@
+{
+  "name": "@iivu/gesture",
+  "version": "0.0.1",
+  "description": "Simple gesture lib, base on es6.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "unpkg": "dist/index.umd.js",
+  "jsdelivr": "dist/index.umd.js",
+  "typings": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/index.cjs.js",
+      "import": "./dist/index.esm.js"
+    }
+  },
+  "homepage": "https://github.com/iivu/gesture",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "author": "LeoCheung <leozhang621@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.0.0",
+    "rollup": "^3.15.0",
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.5"
+  },
+  "files": ["dist"]
+}
