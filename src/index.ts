@@ -188,6 +188,11 @@ export class Gesture {
     this.touchDOM.removeEventListener('touchmove', this.touchmove);
     this.touchDOM.removeEventListener('touchend', this.touchend);
     this.touchDOM.removeEventListener('touchcancel', this.touchcancel);
+    clearTimeout(this.longTapTimer);
+    clearTimeout(this.swipeTimer);
+    clearTimeout(this.tapTimer);
+    clearTimeout(this.touchTimer);
+    this.offAll();
   }
 
   on<E extends GestureEvent>(event: E, callback: GestureEventHandlers[E]) {
