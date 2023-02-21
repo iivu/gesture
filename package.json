@@ -2,6 +2,7 @@
   "name": "@iivu/gesture",
   "version": "0.0.1",
   "description": "Simple gesture lib, base on es6.",
+  "type": "module",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "unpkg": "dist/index.umd.js",
@@ -15,7 +16,6 @@
     }
   },
   "homepage": "https://github.com/iivu/gesture",
-  "type": "module",
   "scripts": {
     "build": "rollup -c"
   },
