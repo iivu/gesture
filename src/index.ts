@@ -25,7 +25,7 @@ export enum GestureSwipeDirection {
 }
 
 class Finger {
-  constructor(public x: number, public y: number) {}
+  constructor(public x: number, public y: number, public id: number) {}
 }
 class Vector2 {
   x = 0;
@@ -85,7 +85,7 @@ export class Gesture {
   private touchstart = (e: TouchEvent) => {
     if (!e.touches) return;
     this.startTouchesCount = e.touches.length;
-    this.startFinger1 = new Finger(e.touches[0].pageX, e.touches[0].pageY);
+    this.startFinger1 = new Finger(e.touches[0].pageX, e.touches[0].pageY, e.touches[0].identifier);
     this.timeCurrentTouch = Date.now();
     this.timeTouchDelta = this.timeCurrentTouch - this.timeLastTouch;
     this.events.onTouchStart?.(e);
@@ -103,7 +103,7 @@ export class Gesture {
     if (e.touches.length > 1) {
       // 触摸手指大于1
       this.cancelLongTapTimer();
-      this.startFinger2 = new Finger(e.touches[1].pageX, e.touches[1].pageY);
+      this.startFinger2 = new Finger(e.touches[1].pageX, e.touches[1].pageY, e.touches[1].identifier);
       this.startVector2 = new Vector2(this.startFinger1, this.startFinger2);
       // 记录下初始的两指距离
       this.pinchLen = this.pinchLenStart = this.getLen(this.startVector2);
@@ -118,7 +118,7 @@ export class Gesture {
     if (!e.touches) return;
     e.stopPropagation();
     e.preventDefault();
-    this.currFinger1 = new Finger(e.touches[0].pageX, e.touches[0].pageY);
+    this.currFinger1 = new Finger(e.touches[0].pageX, e.touches[0].pageY, e.touches[0].identifier);
     if (e.touches.length > 1) {
       // 双指移动
       const currentVector2 = new Vector2({ x: e.touches[1].pageX, y: e.touches[1].pageY }, this.currFinger1);
@@ -131,6 +131,10 @@ export class Gesture {
         this.events.onRotate?.(e, this.getRotateAngle(currentVector2, this.startVector2));
       }
     } else {
+      // 需要注意，我们必须跟踪同一个手指的移动情况，避免发生坐标跳动
+      if (this.startFinger1!.id != this.currFinger1.id) {
+        this.startFinger1 = this.currFinger1;
+      }
       // 单指移动
       const moveDelta = {
         deltaX: this.startFinger1 === null || this.currFinger1 === null ? 0 : this.currFinger1.x - this.startFinger1.x,
