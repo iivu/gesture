@@ -121,6 +121,8 @@ export class Gesture {
     this.currFinger1 = new Finger(e.touches[0].pageX, e.touches[0].pageY, e.touches[0].identifier);
     if (e.touches.length > 1) {
       // 双指移动
+      // 双指移动下会忽略onPresssMove事件，因此需要实时更新startFinger1的位置，避免坐标跳动
+      this.startFinger1 = this.currFinger1;
       const currentVector2 = new Vector2({ x: e.touches[1].pageX, y: e.touches[1].pageY }, this.currFinger1);
       if (this.pinchLenStart > 0) {
         const currPinchLen = this.getLen(currentVector2);
