@@ -31,8 +31,8 @@ class Vector2 {
   x = 0;
   y = 0;
   constructor(point1: { x: number; y: number }, point2: { x: number; y: number }) {
-    this.x = Math.abs(point1.x - point2.x);
-    this.y = Math.abs(point1.y - point2.y);
+    this.x = point1.x - point2.x;
+    this.y = point1.y - point2.y;
   }
 }
 
@@ -104,7 +104,7 @@ export class Gesture {
       // 触摸手指大于1
       this.cancelLongTapTimer();
       this.startFinger2 = new Finger(e.touches[1].pageX, e.touches[1].pageY, e.touches[1].identifier);
-      this.startVector2 = new Vector2(this.startFinger1, this.startFinger2);
+      this.startVector2 = new Vector2(this.startFinger2 ,this.startFinger1);
       // 记录下初始的两指距离
       this.pinchLen = this.pinchLenStart = this.getLen(this.startVector2);
       this.events.onMultipointStart?.(e);
@@ -123,7 +123,7 @@ export class Gesture {
       // 双指移动
       // 双指移动下会忽略onPresssMove事件，因此需要实时更新startFinger1的位置，避免坐标跳动
       this.startFinger1 = this.currFinger1;
-      const currentVector2 = new Vector2({ x: e.touches[1].pageX, y: e.touches[1].pageY }, this.currFinger1);
+      const currentVector2 = new Vector2({ x: e.touches[1].pageX, y: e.touches[1].pageY } , this.currFinger1);
       if (this.pinchLenStart > 0) {
         const currPinchLen = this.getLen(currentVector2);
         this.pinchLen = currPinchLen;
@@ -176,6 +176,8 @@ export class Gesture {
         }
       }, 0);
     }
+
+    this.preStartFinger1 = null;
   };
 
   private touchcancel = (e: TouchEvent) => {
@@ -250,7 +252,7 @@ export class Gesture {
 
   // 向量点乘
   dot(v1: Vector2, v2: Vector2) {
-    return v1.x * v2.x + v1.y + v2.y;
+    return v1.x * v2.x + v1.y * v2.y;
   }
 
   // 向量叉乘

@@ -1,6 +1,6 @@
 {
   "name": "@iivu/gesture",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple gesture lib, base on es6.",
   "type": "module",
   "main": "dist/index.cjs.js",
